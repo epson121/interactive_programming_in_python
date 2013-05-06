@@ -1,7 +1,6 @@
-#w3 mini project for the "interactive programming in python" coursera class..
-# you can test this following the next url:
-# http://www.codeskulptor.org/#user10_uFh1QL2dU2_2.py
-
+# template for "Guess the number" mini-project
+# input will come from buttons and an input field
+# all output for the game will be printed in the console
 import random
 import simplegui
 
@@ -9,20 +8,25 @@ import simplegui
 number = -1
 count = 0
 max_count = 0
+#0 - 0-100
+#1 - 0-1000
+game_mode = 0
 
 # define event handlers for control panel
     
 def range100():
     print "You have chosen 0 - 100 game mode.\nTake your guess.."
     f.start()
-    global number, max_count
+    global number, max_count, game_mode
+    game_mode = 0
     number = random.randrange(0, 100)
     max_count = 7
 
 def range1000():
     print "You have chosen 0 - 1000 game mode.\nTake your guess.."
     f.start()
-    global number, max_count
+    global number, max_count, game_mode
+    game_mode = 1
     number = random.randrange(0, 1000)
     max_count = 10
 
@@ -43,6 +47,10 @@ def get_input(guess):
     else:
         print "Correct."
         print "Starting new game..."
+        if game_mode == 0:
+            range100()
+        else:
+            range1000()
         count = 0
         f.start()
         return
@@ -65,4 +73,3 @@ f.add_input("Guess", get_input, 100)
 f.start()
 
 # always remember to check your completed program against the grading rubric
-
