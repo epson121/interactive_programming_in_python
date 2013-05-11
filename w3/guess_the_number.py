@@ -8,26 +8,23 @@ import simplegui
 number = -1
 count = 0
 max_count = 0
-#0 - 0-100
-#1 - 0-1000
-game_mode = 0
 
 # define event handlers for control panel
     
 def range100():
     print "You have chosen 0 - 100 game mode.\nTake your guess.."
     f.start()
-    global number, max_count, game_mode
-    game_mode = 0
+    global number, max_count, count
     number = random.randrange(0, 100)
+    count = 0
     max_count = 7
 
 def range1000():
     print "You have chosen 0 - 1000 game mode.\nTake your guess.."
     f.start()
-    global number, max_count, game_mode
-    game_mode = 1
+    global number, max_count, count
     number = random.randrange(0, 1000)
+    count = 0
     max_count = 10
 
     
@@ -47,10 +44,6 @@ def get_input(guess):
     else:
         print "Correct."
         print "Starting new game..."
-        if game_mode == 0:
-            range100()
-        else:
-            range1000()
         count = 0
         f.start()
         return
