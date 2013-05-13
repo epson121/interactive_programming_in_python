@@ -1,6 +1,3 @@
-# Implementation of classic arcade game Pong
-# DEMO AT http://www.codeskulptor.org/#user13_m18WJ61w9LTWw7M_0.py
-# still missing: restart button, and update on collision detection
 
 import simplegui
 import random
@@ -45,16 +42,22 @@ def update_ball():
 
 def check_for_collisions():
     global BALL_RADIUS, ball_pos, ball_vel, paddle1_pos, paddle2_pos, point_right, point_left
+    #check the left paddle
     if ball_pos[0] - BALL_RADIUS <= PAD_WIDTH and ball_pos[1] > paddle1_pos[1] - HALF_PAD_HEIGHT and ball_pos[1] < paddle1_pos[1] + HALF_PAD_HEIGHT:
         ball_vel[0] *= -1.1
+    #check the right paddle
     if ball_pos[0] + BALL_RADIUS >= WIDTH - 1 -PAD_WIDTH and ball_pos[1] > paddle2_pos[1] - HALF_PAD_HEIGHT and ball_pos[1] < paddle2_pos[1] + HALF_PAD_HEIGHT:
         ball_vel[0] *= -1.1
+    #check bottom
     if ball_pos[1] + BALL_RADIUS >= HEIGHT -1:
         ball_vel[1] *= -1
+    #check floor
     if ball_pos[1] - BALL_RADIUS <= 0:
         ball_vel[1] *= -1 
+    #point for right
     if ball_pos[0] < 0:
         point_right = True
+    #point for left
     if ball_pos[0] > WIDTH:
         point_left = True
 
@@ -108,35 +111,47 @@ def draw(c):
     c.draw_circle(ball_pos, BALL_RADIUS, 2, "Green", "White")
     c.draw_text(str(points_left), (WIDTH/3, HEIGHT/3), 40, "Red")
     c.draw_text(str(points_right), (2*WIDTH/3, HEIGHT/3), 40, "Red")
+
 def keydown(key):
     global paddle1_vel, paddle2_vel, paddle1_pos, paddle2_pos
-    if key == simplegui.KEY_MAP['down']:
+    if key == simplegui.KEY_MAP['s']:
         paddle1_vel[1] = 5
-    elif key == simplegui.KEY_MAP['up']:
+    elif key == simplegui.KEY_MAP['w']:
         paddle1_vel[1] = -5
-    if key==simplegui.KEY_MAP['w']:
+    if key==simplegui.KEY_MAP['up']:
         paddle2_vel[1] = -5
-    elif key==simplegui.KEY_MAP['s']:
+    elif key==simplegui.KEY_MAP['down']:
         paddle2_vel[1] = 5
     
         
 def keyup(key):
     global paddle1_vel, paddle2_vel, paddle1_pos, paddle2_pos
-    if key == simplegui.KEY_MAP['down']:
+    if key == simplegui.KEY_MAP['s']:
         paddle1_vel[1] = 0
-    elif key == simplegui.KEY_MAP['up']:
+    elif key == simplegui.KEY_MAP['w']:
         paddle1_vel[1] = 0
-    if key==simplegui.KEY_MAP["w"]:
+    if key==simplegui.KEY_MAP["up"]:
         paddle2_vel[1] = 0
-    elif key==simplegui.KEY_MAP["s"]:
+    elif key==simplegui.KEY_MAP["down"]:
         paddle2_vel[1] = 0
 
+def reset():
+    global ball_initiated, point_right, point_left, points_right, points_left
+    ball_initiated = False
+    point_right = False
+    point_left = False
+    points_right = 0
+    points_left = 0
+    ball_init(random.choice([True, False]))
 # create frame
 frame = simplegui.create_frame("Pong", WIDTH, HEIGHT)
 frame.set_draw_handler(draw)
 frame.set_keydown_handler(keydown)
 frame.set_keyup_handler(keyup)
+button1 = frame.add_button("Reset", reset)
 
 
 # start frame
 frame.start()
+
+
